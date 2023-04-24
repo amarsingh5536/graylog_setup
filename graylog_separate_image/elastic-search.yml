@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  elasticsearch:
+    restart: always
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    container_name: es_es01
+    environment:
+      - node.name=es01
+      - discovery.type=single-node
+      - http.host=0.0.0.0
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.ml.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data # You may change the volume to /usr/share/elasticsearch1/data if you are using two services in same host
+    ports:
+      - 9200:9200
+
+volumes:
+  elasticsearch:
+    driver: local
+
